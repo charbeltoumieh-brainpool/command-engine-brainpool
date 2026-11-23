@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-density="comfortable">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#05060a" id="ce-theme-color" />
+    <link rel="icon" href="data:," />
+    <title>Command Engine</title>
+    <script>
+      (function () {
+        try {
+          var pref = localStorage.getItem("ce.theme.mode") || "dark";
+          var resolved = pref;
+          if (pref === "system") {
+            resolved = window.matchMedia("(prefers-color-scheme: light)").matches
+              ? "light"
+              : "dark";
+          }
+          if (resolved !== "light" && resolved !== "dark") {
+            resolved = "dark";
+          }
+          document.documentElement.dataset.theme = resolved;
+          var savedDensity = localStorage.getItem("ce.density");
+          if (savedDensity === "compact" || savedDensity === "comfortable") {
+            document.documentElement.dataset.density = savedDensity;
+          }
+          var meta = document.getElementById("ce-theme-color");
+          if (meta) {
+            meta.setAttribute(
+              "content",
+              resolved === "light" ? "#f5f2eb" : "#05060a"
+            );
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
